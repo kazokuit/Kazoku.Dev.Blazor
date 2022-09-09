@@ -1,0 +1,106 @@
+﻿@inject HttpClient httpClient
+
+@if (!list.Any())
+{
+    <p>Inga projekt kunde hittas.</p>
+}
+else
+{
+    @*<Kazoku.Dev.Blazor.Components.Pagination TotalNumberOfPages="totalPagesQuanitity" CurrentPage="currentPage" SelectedPage="SelectedPage" />*@
+     <table class="table table-striped table-hover caption-top">
+        <caption>Visar <b>@start ... @end av @totalRecords</b></caption>
+         <thead>
+            <tr>
+                 <th scope="col">ID</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in list)
+            {
+                <tr>
+                    <td scope="row">@project.Id</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @*<Kazoku.Dev.Blazor.Components.Pagination TotalNumberOfPages="totalPagesQuanitity" CurrentPage="currentPage" SelectedPage="SelectedPage" />*@
+}
+
+@code {
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
+
+    [Parameter]
+    public bool? Sent { get; set; } = null;
+
+    private string apiVersion = "2022-07-01";
+
+    private string? error = null;
+
+    private List<Project> list = new List<Project>();
+    private int totalPagesQuanitity;
+    private int totalRecords;
+
+    // Default variables
+    private int items = 50;
+    private int page = 1;
+    private int currentPage = 1;
+    private int start;
+    private int end;
+
+    public EventCallback<int> NewSelectedPage { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SelectedPage(currentPage);
+    }
+
+    private async Task SelectedPage (int page)
+    {
+        currentPage = page;
+        await GetProjectsAsync(page, Sent);
+    }
+
+    private async Task GetProjectsAsync(int page = 1, bool? sent = null)
+    {
+        var apiRoute = "api/projects";
+
+        if (sent is not null)
+        {
+            apiRoute += $"&sent={sent}";
+        }
+
+        try
+        {
+            using (var response = await httpClient.GetAsync(apiRoute))
+            {
+                response.EnsureSuccessStatusCode();
+
+                var responseBody = await response.Content.ReadAsStringAsync();
+                list = JsonConvert.DeserializeObject<List<Project>>(responseBody);
+                CalculateStartAndEndValues();
+            }
+        }
+        catch(Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+    private void CalculateStartAndEndValues()
+    {
+        start = items * (currentPage - 1) + 1;
+        end = items * currentPage;
+
+        if(start == 0)
+        {
+            start = 1;
+        }
+
+        if (end >= totalRecords)
+        {
+            end = totalRecords;
+        }
+    }
+}

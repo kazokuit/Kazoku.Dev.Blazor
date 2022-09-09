@@ -15,6 +15,10 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 builder.Services.AddControllersWithViews()
     .AddMicrosoftIdentityUI();
+builder.Services.AddScoped<HttpClient>(s =>
+{
+    return new HttpClient { BaseAddress = new Uri(apiUrl) };
+});
 
 // Add authorization 
 builder.Services.AddAuthorization(options =>

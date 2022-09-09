@@ -1,0 +1,67 @@
+﻿<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @foreach (var link in links)
+        {
+            <li class="page-item @(link.Enabled ? null : "disabled") @(link.Active ? "active" : null)">
+                <a class="page-link" @onclick="@(() => SelectedPageInteral(link))">@link.Text</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@code {
+    [Parameter]
+    public int CurrentPage { get; set; } = 1;
+
+    [Parameter]
+    public int TotalNumberOfPages { get; set; }
+
+    [Parameter]
+    public EventCallback<int> SelectedPage { get; set; }
+
+    private List<Link> links;
+    private int radius =  2;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        LoadPages();
+    }
+
+    private async Task SelectedPageInteral (Link link)
+    {
+        if (link.Page == CurrentPage)
+        {
+            return;
+        }
+
+        if (!link.Enabled)
+        {
+            return;
+        }
+
+        CurrentPage = link.Page;
+        await SelectedPage.InvokeAsync(link.Page);
+    }
+
+    private void LoadPages()
+    {
+        links = new List<Link>();
+
+        var isPreviousPageLinkEnabled = CurrentPage != 1;
+        var previousPage = CurrentPage - 1;
+        links.Add(new Link(previousPage, isPreviousPageLinkEnabled, "Föregående"));
+
+        for (int i = 1; i <= TotalNumberOfPages; i++)
+        {
+            if (i >= CurrentPage - radius && i <= CurrentPage + radius)
+            {
+                links.Add(new Link(i) { Active = CurrentPage == i });
+            }
+        }
+
+        var isNetPageLinkEnabled = CurrentPage != TotalNumberOfPages;
+        var nextPage = CurrentPage + 1;
+
+        links.Add(new Link(nextPage, isNetPageLinkEnabled, "Nästa"));
+    }
+}
