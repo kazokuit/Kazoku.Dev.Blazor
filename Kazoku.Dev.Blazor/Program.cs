@@ -1,3 +1,4 @@
+using Havit.Blazor.Components.Web;
 using Kazoku.Dev.Blazor.Models.Configs;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
@@ -19,6 +20,7 @@ builder.Services.AddScoped<HttpClient>(s =>
 {
     return new HttpClient { BaseAddress = new Uri(apiUrl) };
 });
+builder.Services.AddHxServices();
 
 // Add authorization 
 builder.Services.AddAuthorization(options =>

@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Havit.Blazor.Components.Web" Version="3.0.0" />
+    <PackageReference Include="Havit.Blazor.Components.Web.Bootstrap" Version="3.0.0" />
     <PackageReference Include="Kazoku.Common.Models" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.8" NoWarn="NU1605" />
