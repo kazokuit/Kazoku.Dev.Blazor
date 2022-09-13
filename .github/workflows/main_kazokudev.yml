@@ -50,7 +50,7 @@ jobs:
       - name: App Settings Variable Substitution  
         uses: microsoft/variable-substitution@v1  
         with:
-          files: '${{env.DOTNET_ROOT}}/Kazoku.Dev.Blazor/Kazoku.Dev.Blazor/appsettings.json
+          files: '$*appsettings.json*'
         env:
           ConnectionStrings.Api: ${{ secrets.CONNECTIONSTRINGS_API }}
 
