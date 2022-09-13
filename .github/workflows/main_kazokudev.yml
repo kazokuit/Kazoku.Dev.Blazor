@@ -26,13 +26,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/kazokudev
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{env.DOTNET_ROOT}}/kazokudev
 
   deploy:
     runs-on: windows-latest
@@ -50,7 +50,7 @@ jobs:
       - name: App Settings Variable Substitution  
         uses: microsoft/variable-substitution@v1  
         with:
-          files: '${{env.DOTNET_ROOT}}/appsettings.json'
+          files: '${{env.DOTNET_ROOT}}/kazokudev/appsettings.json'
         env:
           ConnectionStrings.Api: ${{ secrets.CONNECTIONSTRINGS_API }}
 
