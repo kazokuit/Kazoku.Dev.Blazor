@@ -27,9 +27,9 @@ jobs:
         with:
           files: '*/*appsettings.json'
         env:
-          AzureAd.tenantId: ${{ secrets.AZUREAD_TENANTID }}
-          AzureAd.clientId: ${{ secrets.AZUREAD_CLIENTID }}
-          ConnectionStrings.api: ${{ secrets.CONNECTIONSTRINGS_API }}
+          AzureAd.TenantId: ${{ secrets.AZUREAD_TENANTID }}
+          AzureAd.ClientId: ${{ secrets.AZUREAD_CLIENTID }}
+          ConnectionStrings.Api: ${{ secrets.CONNECTIONSTRINGS_API }}
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
