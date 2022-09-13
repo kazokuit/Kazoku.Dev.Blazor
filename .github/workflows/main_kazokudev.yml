@@ -52,8 +52,7 @@ jobs:
         with:
           files: '${{env.DOTNET_ROOT}}/myapp/appsettings.json'
         env:
-          ConnectionStrings.Default: ${{ secrets.ConnectionStrings.Api }}
-          App.ServerRootAddress: ${{ env.SERVER_ROOT_ADDRESS }}
+          ConnectionStrings.Api: ${{ secrets.CONNECTIONSTRINGS_API }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
