@@ -30,7 +30,7 @@ jobs:
         with:
           files: '*/*appsettings.json'
         env:
-          AzureAd.TenantId: 'Hello World'
+          AzureAd.TenantId: ${{ secrets.AZUREAD_TENANTID }}
           AzureAd.ClientId: ${{ secrets.AZUREAD_CLIENTID }}
           ConnectionStrings.Api: ${{ secrets.CONNECTIONSTRINGS_API }}
 
